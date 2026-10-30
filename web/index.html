@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ПК-Подбор</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314a9b8' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 2l9 5v10l-9 5-9-5V7z'/%3E%3Cpath d='M12 12l9-5M12 12v10M12 12L3 7'/%3E%3C/svg%3E">
+<!-- ?v — один раз сбросить копии, закешированные до заголовка no-cache (api/main.py) -->
+<link rel="stylesheet" href="app/app.css?v=3">
+<script>try { const t = localStorage.getItem('pcb-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<!-- Yandex.Metrika counter: только на боевом домене, локальные просмотры не считаем -->
+<script type="text/javascript">
+  if (location.hostname === 'pcpodbor.ru') {
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112793519', 'ym');
+
+    ym(112793519, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  }
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112793519" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#podbor"><span class="logo-mark" data-icon="cube"></span><span>ПК-Подбор</span></a>
+  <div class="top-right">
+    <a class="top-total" href="#sborka" id="top-total" title="Итоговая цена сборки">—</a>
+    <button class="theme" id="theme" type="button" aria-label="Тёмная тема"></button>
+  </div>
+</header>
+
+<!-- Широкий экран: слева панель с вкладками, справа 3D-модель на всю высоту.
+     Узкий: 3D — отдельная вкладка, вкладки внизу экрана. -->
+<main class="shell">
+  <aside class="pane">
+    <nav class="tabs" aria-label="Разделы">
+      <a href="#podbor" data-tab="podbor"><span data-icon="search"></span>Подбор</a>
+      <a href="#sborka" data-tab="sborka"><span data-icon="list"></span>Сборка</a>
+      <a href="#fps" data-tab="fps"><span data-icon="fps"></span>FPS</a>
+      <a href="#3d" data-tab="3d"><span data-icon="cube"></span>3D</a>
+    </nav>
+
+    <!-- ПОДБОР -->
+    <section class="tab" id="tab-podbor">
+      <h1>Подберите идеальный ПК</h1>
+      <p class="lead">Укажите параметры — система найдёт лучшие совместимые варианты с актуальными ценами с 5 маркетплейсов</p>
+      <div class="shops-legend" id="shops-legend"></div>
+      <form class="card form" id="form">
+        <label class="field wide-f"><span>Бюджет</span>
+          <span class="money"><input id="budget" type="number" min="15000" max="2000000" step="5000" value="120000" required><i>₽</i></span></label>
+        <div class="field wide-f"><span>Задача</span>
+          <div class="seg" data-name="task"><button type="button" data-v="game" class="on">Игры</button><button type="button" data-v="work">Работа</button><button type="button" data-v="office">Офис</button></div></div>
+        <div class="field wide-f" id="res-field"><span>Разрешение</span>
+          <div class="seg" data-name="res"><button type="button" data-v="1080p">1080p</button><button type="button" data-v="1440p" class="on">1440p</button><button type="button" data-v="4K">4K</button></div></div>
+        <label class="field"><span>Процессор</span><select id="cpu"><option value="">Любой</option><option>AMD</option><option>Intel</option></select></label>
+        <label class="field"><span>Видеокарта</span><select id="gpu"><option value="">Любая</option><option>NVIDIA</option><option>AMD</option><option>Intel</option></select></label>
+        <label class="field"><span>Корпус</span><select id="size"><option value="">Любой</option><option value="mATX">Компактный</option><option value="ITX">Мини-ITX</option></select></label>
+        <button class="btn primary go" type="submit">Подобрать <span data-icon="arrow"></span></button>
+      </form>
+      <p class="muted msg" id="advise-msg"></p>
+      <div class="variants" id="variants"></div>
+    </section>
+
+    <!-- СБОРКА -->
+    <section class="tab" id="tab-sborka" hidden>
+      <div class="stack">
+        <div class="card">
+          <h1>Ваша сборка</h1>
+          <p class="muted small" id="build-sub"></p>
+          <ul class="plist" id="parts"></ul>
+          <div class="total-row"><span>Итого</span><b id="build-total">—</b></div>
+          <button class="btn soft wide share" type="button" id="share"><span data-icon="share"></span>Поделиться сборкой</button>
+        </div>
+        <div class="card">
+          <h2>Совместимость</h2>
+          <p class="status" id="compat-status"></p>
+          <ul class="checks" id="checks"></ul>
+        </div>
+        <div class="card">
+          <form class="up-head" id="up-form">
+            <h2>Улучшить сборку за</h2>
+            <span class="money chip"><input id="up-money" type="number" min="1000" max="1000000" step="1000" value="20000" aria-label="Сумма доплаты"><i>₽</i></span>
+            <button class="btn primary sm" type="submit" aria-label="Подобрать улучшение"><span data-icon="arrow"></span></button>
+            <label class="resale"><input type="checkbox" id="up-resale"> Учесть продажу старых деталей (≈ 50 % цены)</label>
+          </form>
+          <div id="up-out"><p class="muted small">Система подскажет, какие детали заменить на эту сумму и какой будет прирост. Остальное остаётся.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FPS -->
+    <section class="tab" id="tab-fps" hidden>
+      <div class="stack">
+        <div>
+          <h1>FPS в играх</h1>
+          <p class="lead" id="fps-sub">Высокие настройки, без трассировки лучей · оценка ±15 %</p>
+        </div>
+        <div class="card" id="fps-summary">
+          <div class="sum-head"><h2>Средняя производительность</h2>
+            <div class="seg sm" data-name="fpsres"><button type="button" data-v="0">1080p</button><button type="button" data-v="1" class="on">1440p</button><button type="button" data-v="2">4K</button></div></div>
+          <div class="big" id="fps-avg">—</div>
+          <p class="muted small" id="fps-avg-res"></p>
+          <div class="bars" id="fps-bars"></div>
+          <ul class="stats" id="fps-stats"></ul>
+        </div>
+        <div class="card flush"><div class="table-wrap"><table class="fps-table" id="fps-table"></table></div></div>
+        <div class="card note-card"><span data-icon="info"></span>
+          <div><b>Как считается</b><p>Модель «узкого места»: кадры ограничивает и видеокарта, и процессор. Баллы — по сводным тестам TechPowerUp. Память тоже учитывается: один модуль или DDR4 на LGA1700 снижают потолок процессора. Реальные цифры зависят от версии игры, драйверов и сцены.</p></div></div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- 3D -->
+  <section class="stage" id="tab-3d" hidden>
+    <iframe id="frame" title="3D-модель сборки"></iframe>
+  </section>
+</main>
+
+<dialog class="picker filtered" id="picker">
+  <form method="dialog" class="picker-head"><h2 id="picker-title">Заменить</h2><button class="icon-btn" aria-label="Закрыть"><span data-icon="x"></span></button></form>
+  <div class="picker-body">
+    <aside class="pfilters" id="pfilters" aria-label="Фильтры"></aside>
+    <div class="pmain">
+      <div class="picker-tools">
+        <input id="picker-q" type="search" placeholder="Поиск: модель, бренд, 5070, AM5…" autocomplete="off">
+        <button class="btn ghost sm pf-toggle" type="button" id="pf-toggle" aria-expanded="false">Фильтры</button>
+        <div class="seg sm" data-name="psort" aria-label="Сортировка"><button type="button" data-v="fit" class="on">Подходящие</button><button type="button" data-v="asc">Дешевле</button><button type="button" data-v="desc">Дороже</button></div>
+      </div>
+      <p class="muted small" id="picker-count"></p>
+      <ul class="picker-list" id="picker-list"></ul>
+    </div>
+  </div>
+</dialog>
+<dialog class="picker hist" id="hist" aria-labelledby="hist-title">
+  <form method="dialog" class="picker-head"><div><h2 id="hist-title">История цен</h2><p class="muted small" id="hist-sub"></p></div>
+    <button class="icon-btn" aria-label="Закрыть"><span data-icon="x"></span></button></form>
+  <div class="hist-legend" id="hist-legend"></div>
+  <div class="hist-chart" id="hist-chart"></div>
+  <p class="muted small" id="hist-note"></p>
+  <details class="hist-table"><summary>Таблица по дням</summary><div class="table-wrap"><table id="hist-table"></table></div></details>
+</dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="app/app.js?v=3" type="module"></script>
+</body>
+</html>

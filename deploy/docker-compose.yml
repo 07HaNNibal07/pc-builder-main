@@ -1,0 +1,30 @@
+# Сервер: только сайт и API подбора. Базы нет — работают по catalog.js, запечённому в образ.
+# Выкладка — scripts/deploy.sh (собирает образ на сервере из api/Dockerfile).
+# Снаружи смотрит Caddy (80/443, HTTPS для albion-x.shop), API доступен только ему.
+services:
+  api:
+    build: { context: .., dockerfile: api/Dockerfile }
+    image: pcb-api
+    container_name: pcb-api
+    restart: unless-stopped
+    expose:
+      - "8000"
+    mem_limit: 400m
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: pcb-caddy
+    restart: unless-stopped
+    depends_on: [api]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data        # сертификаты — не терять при пересоздании
+      - caddy_config:/config
+    mem_limit: 128m
+
+volumes:
+  caddy_data:
+  caddy_config:

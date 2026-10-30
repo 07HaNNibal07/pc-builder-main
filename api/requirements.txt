@@ -1,0 +1,13 @@
+fastapi==0.115.6
+uvicorn==0.34.0
+anyio>=4.7,<5
+langchain-core>=0.3.60,<0.4
+langchain-openai>=0.3.18,<0.4
+langchain-ollama>=0.3.3,<0.4
+langgraph==0.4.10
+# These companion pins prevent pip from resolving LangGraph 0.4 against its
+# incompatible 1.x prebuilt package during a clean Docker build.
+langgraph-checkpoint==2.1.2
+langgraph-prebuilt==0.2.3
+langgraph-sdk==0.3.15
+python-dotenv>=1.0,<2
