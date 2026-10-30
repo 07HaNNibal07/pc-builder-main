@@ -6,6 +6,8 @@ import json
 import html
 
 ROOT = Path(__file__).resolve().parent
+REMOTE_FILE = ROOT/'lab6_github_result.json'
+REMOTE = json.loads(REMOTE_FILE.read_text(encoding='utf-8')) if REMOTE_FILE.exists() else {}
 START = date(2026, 10, 30)
 PEOPLE = ['Зубков Кирилл', 'Матюшкин Сергей', 'Бабаев Ильгар', 'Афсарзада Арман']
 # Number, verbatim LR4 title (pages 2-3), owner, weeks, hours, predecessors.
@@ -90,18 +92,22 @@ for n,title,owner,w1,w2,h,deps in PLAN:
         description=desc,acceptance_criteria=checks,evidence=evidence,issue_url=None))
 
 totals=Counter()
+for t in tasks:
+    linked = next((i for i in REMOTE.get('issues', []) if i['task_id']==t['id']), None)
+    if linked:
+        t['issue_url'] = linked['url']
 for t in tasks: totals[t['owner']]+=t['estimated_hours']
 assert len(tasks)==26 and sum(totals.values())==248
 assert list(totals[p] for p in PEOPLE)==[60,68,58,62]
 dataset=dict(project='Overlord PC',source='ЛР4, обновлённая версия: таблица на страницах 2–3; индивидуальная часть на странице 5',
     audit_date='2026-10-30',planning_start=str(START),planning_start_is_assumption=True,
     calendar_rule='14 учебных недель по 7 календарных дней; начало включительно, конец включительно; часы не распределены равномерно по дням',
-    github_created=False,github_url=None,existing_issues_checked=False,
-    note='Ответственные по ФИО; GitHub Assignees не назначены. Данные для переноса, не доказательство создания GitHub Projects. Статусы предварительные по локальному аудиту, дата начала условная.',tasks=tasks)
+    github_created=bool(REMOTE.get('github_projects_created')),github_url=REMOTE.get('project_url'),existing_issues_checked=bool(REMOTE),
+    note='Ответственные по ФИО; GitHub Assignees не назначены. Реальные URL находятся в issue_url и lab6_github_result.json. Статусы предварительные по локальному аудиту, дата начала условная.',tasks=tasks)
 (ROOT/'lab6_tasks.json').write_text(json.dumps(dataset,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
 def body(t):
-    return '\n'.join([f"## {t['title']}",'',f"**Ответственный:** {t['owner']}  ",f"**План:** недели {t['week_start']}–{t['week_end']}; {t['start_date']} — {t['end_date']} (учебный календарь)  ",f"**Трудозатраты:** {t['estimated_hours']} ч  ",f"**Зависимости ЛР4:** {dependencies(t)}  ",f"**Статус аудита:** {t['status']}",'',f"**Исходное название ЛР4:** {t['original_title']}",'','### Описание','',t['description'],'','### Что подтверждено и что осталось проверить','',t['evidence'],'','### Критерии приёмки','']+[f'- [ ] {x}' for x in t['acceptance_criteria']]+['',f'Идентификатор плана: ЛР4-{t["id"]:02d}. Это номер задачи плана, а не номер GitHub Issue.',''])
+    return '\n'.join([f"## {t['title']}",'',f"**GitHub:** {t['issue_url'] or 'Не перенесено'}",'',f"**Ответственный:** {t['owner']}  ",f"**План:** недели {t['week_start']}–{t['week_end']}; {t['start_date']} — {t['end_date']} (учебный календарь)  ",f"**Трудозатраты:** {t['estimated_hours']} ч  ",f"**Зависимости ЛР4:** {dependencies(t)}  ",f"**Статус аудита:** {t['status']}",'',f"**Исходное название ЛР4:** {t['original_title']}",'','### Описание','',t['description'],'','### Что подтверждено и что осталось проверить','',t['evidence'],'','### Критерии приёмки','']+[f'- [ ] {x}' for x in t['acceptance_criteria']]+['',f'Идентификатор плана: ЛР4-{t["id"]:02d}. Это номер задачи плана, а не номер GitHub Issue.',''])
 (ROOT/'lab6_task_cards.md').write_text('# Overlord PC — карточки 26 задач ЛР4\n\nСтатусы — предварительный аудит 30.10.2026, а не подтверждение текущей активности участников. Начало календаря 30.10.2026 принято условно. Все критерии оставлены непринимаемыми до проверки; ни одна задача не объявлена Done.\n\n'+'\n---\n\n'.join(body(t) for t in tasks),encoding='utf-8')
 
 table='\n'.join(['| № | Задача | Ответственный | Недели | Календарный период | Часы | Зависимости | Статус |','|---:|---|---|---|---|---:|---|---|']+[f"| {t['id']} | {t['title']} | {t['owner']} | {t['week_start']}–{t['week_end']} | {t['start_date']} — {t['end_date']} | {t['estimated_hours']} | {dependencies(t)} | {t['status']} |" for t in tasks])
@@ -179,6 +185,21 @@ Team Lead уточняет критерии, проверяет зависимо
 
 Пошаговая инструкция, схема полей, перенос без дублей и список страниц для скриншотов: [lab6_github_setup.md](lab6_github_setup.md). Локальная доска пригодна для проверки структуры управления, однако три требуемых скриншота GitHub нужно делать только с реально настроенного GitHub Projects. Не заменять их макетом или локальным HTML.
 '''
+if REMOTE.get('github_projects_created'):
+    begin=overview.index('Подготовлен план управления')
+    end=overview.index('\n\nОснова:',begin)
+    overview=overview[:begin]+'''Подготовлен и реально перенесён план из 26 задач ЛР4: 248 часов, 14 учебных недель. Пользователь создал закрытый репозиторий [07HaNNibal07/pc-builder-main](https://github.com/07HaNNibal07/pc-builder-main). Созданы Issues №1–26, восемь меток для ЛР6, статусов и четырёх ответственных, недельные milestones со сроками и [GitHub Projects Overlord PC](https://github.com/users/07HaNNibal07/projects/1). До создания Issues проверен полный список открытых и закрытых задач: он был пуст. Доска импортирует эти же Issues, дополнительных карточек-дубликатов нет. Код приложения не изменён, приглашения и изменение прав не выполнялись.
+
+Настроены представления [Команда](https://github.com/users/07HaNNibal07/projects/1/views/1), [План — 248 часов](https://github.com/users/07HaNNibal07/projects/1/views/2) и [Бабаев Ильгар — 58 часов](https://github.com/users/07HaNNibal07/projects/1/views/3). В проекте создано и заполнено числовое поле Estimate (h). Статусы: 6 Todo, 20 In Progress, 0 Done. ФИО исполнителей указаны в метках Owner и описаниях; фиктивные аккаунты не назначались. Сроки доступны в телах Issues и milestones, связи — в телах Issues с типами FS/SS и прямыми ссылками.
+
+GitHub API доступен через существующий Git Credential Manager; секрет используется только в памяти и не сохраняется. У этой авторизации нет project scope, поэтому доска создана и настроена через авторизованный браузер. Права и OAuth scopes не расширялись. Реальные идентификаторы сохранены в lab6_github_result.json.''' + overview[end:]
+    overview=overview.replace('Его снимки нельзя выдавать за скриншоты GitHub.', 'Для отчёта использовать реальные снимки GitHub github_*.jpg; local_*.png показывают только локальную подготовку.')
+    overview=overview.replace('ответственные указаны текстом в карточках и поле Owner.', 'ответственные указаны текстом в карточках и метках Owner.')
+    overview=overview.replace('таблица с часами и ответственными и Roadmap по датам.', 'таблица с часами и ответственными. Календарные сроки указаны в описаниях и milestones; отдельный Roadmap не создавался.')
+    overview=overview.replace('Схема полей, перенос без дублей', 'Схема полей, перенос без дублей')
+    overview=overview.replace('Ссылки на GitHub появятся только после реального создания или сопоставления.', 'Реальные ссылки GitHub заполнены после создания и проверки Issues.')
+    overview=overview.replace('поле issue_url пока пусто.', 'поле issue_url содержит проверенную ссылку на реальную Issue.')
+    overview=overview.replace('три требуемых скриншота GitHub нужно делать только с реально настроенного GitHub Projects.', 'реальные скриншоты GitHub сохранены в docs/lab6_screenshots/github_*.jpg.')
 (ROOT/'lab6_project_management.md').write_text(overview,encoding='utf-8')
 
 # A real local report, explicitly labelled as local rather than GitHub.
@@ -195,6 +216,8 @@ page='''<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewpor
 </style><header><h1>Overlord PC · Управление проектом</h1><div>ЛР6 / план из ЛР4 / аудит 30 октября 2026</div></header><div class="notice">Локальный учебный отчёт. Это НЕ GitHub Projects. Онлайн-доска и Issues не созданы. Даты условные, ответственные указаны по ФИО.</div><nav><a href="#team">Команда</a><a href="#individual">Бабаев Ильгар</a><a href="#task20">Карточка №20</a></nav><main>
 '''+f'<section id="team"><div class="stats">26 задач · 248 часов · 4 участника · 30.10.2026 — 04.02.2027</div><div class="board">{board}</div></section><section id="individual"><h2>Бабаев Ильгар · PostgreSQL / Data / LLM · 58 часов</h2><div class="individual">{individual}</div></section><section id="task20"><div class="detail">{detail}</div></section></main></html>'
 page=page.replace('<div class="detail">','<div class="detail"><small>Локальная учебная карточка · не GitHub Projects · даты условные</small>')
+if REMOTE.get('github_projects_created'):
+    page=page.replace('Онлайн-доска и Issues не созданы.', 'GitHub Projects и 26 Issues созданы; это локальное представление плана.')
 page=page.replace('href="#team"','href="?view=team"').replace('href="#individual"','href="?view=individual"').replace('href="#task20"','href="?view=task20"')
 page=page.replace('</main></html>', '''</main><script>
 const view = new URLSearchParams(location.search).get('view') || 'team';

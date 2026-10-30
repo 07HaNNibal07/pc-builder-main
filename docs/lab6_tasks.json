@@ -5,10 +5,10 @@
   "planning_start": "2026-10-30",
   "planning_start_is_assumption": true,
   "calendar_rule": "14 учебных недель по 7 календарных дней; начало включительно, конец включительно; часы не распределены равномерно по дням",
-  "github_created": false,
-  "github_url": null,
-  "existing_issues_checked": false,
-  "note": "Ответственные по ФИО; GitHub Assignees не назначены. Данные для переноса, не доказательство создания GitHub Projects. Статусы предварительные по локальному аудиту, дата начала условная.",
+  "github_created": true,
+  "github_url": "https://github.com/users/07HaNNibal07/projects/1",
+  "existing_issues_checked": true,
+  "note": "Ответственные по ФИО; GitHub Assignees не назначены. Реальные URL находятся в issue_url и lab6_github_result.json. Статусы предварительные по локальному аудиту, дата начала условная.",
   "tasks": [
     {
       "id": 1,
@@ -28,7 +28,7 @@
         "Согласовать границы MVP и проверяемые критерии приёмки."
       ],
       "evidence": "README описывает назначение и функции; согласованные критерии MVP не найдены.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/1"
     },
     {
       "id": 2,
@@ -53,7 +53,7 @@
         "Описать архитектуру и зафиксировать согласованную адаптацию стека относительно ЛР4."
       ],
       "evidence": "Найдены FastAPI, collector и web; Next.js в папке не найден.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/2"
     },
     {
       "id": 3,
@@ -80,7 +80,7 @@
         "Оформить словарь данных и схему связей; результаты проверки ограничений приложить к карточке."
       ],
       "evidence": "db/schema.sql: модели, предложения, ценовые срезы, PK/FK, UNIQUE, CHECK, индексы; db/views.sql, db/targets.sql.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/3"
     },
     {
       "id": 4,
@@ -105,7 +105,7 @@
         "Приложить прототипы ключевых экранов и результат их согласования."
       ],
       "evidence": "Файл Figma и ссылка на прототип не обнаружены в доступных материалах.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/4"
     },
     {
       "id": 5,
@@ -130,7 +130,7 @@
         "Составить матрицу функций MVP, сценариев и критериев успешности."
       ],
       "evidence": "tests/test_advisor.py и tests/test_ai_api.py существуют; отдельный базовый тест-план не найден.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/5"
     },
     {
       "id": 6,
@@ -155,7 +155,7 @@
         "Зафиксировать структуру фактического приложения и историю Git; согласовать отличие от Next.js-плана."
       ],
       "evidence": "Python/FastAPI и web существуют. Git инициализирован в рамках ЛР6; Next.js не найден.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/6"
     },
     {
       "id": 7,
@@ -187,7 +187,7 @@
         "Зафиксировать успешный и неуспешный сценарии подключения с безопасным выводом."
       ],
       "evidence": "collector/db.py использует psycopg; docker-compose.yml содержит PostgreSQL 16. В ЛР4 описана успешная проверка подключения Python. Сейчас порт compose 5434, а значение подключения по умолчанию и README — 5433; Prisma не найдена.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/7"
     },
     {
       "id": 8,
@@ -212,7 +212,7 @@
         "Зафиксировать воспроизводимый запуск и доступность сервисов без публикации секретов."
       ],
       "evidence": "Есть docker-compose.yml и api/Dockerfile; запуск окружения в этой работе не проверялся.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/8"
     },
     {
       "id": 9,
@@ -241,7 +241,7 @@
         "Проверить основные состояния, навигацию и адаптивность UI."
       ],
       "evidence": "Есть web/index.html, web/app/app.css, web/app/app.js.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/9"
     },
     {
       "id": 10,
@@ -269,7 +269,7 @@
         "Приложить сводку минимум по 20 сборкам и протокол выборочной сверки с PostgreSQL/каталогом."
       ],
       "evidence": "Есть collector/catalog.py, normalize.py и web/prototype-3d/catalog.js; наличие 20 проверенных полных сборок не подтверждено.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/10"
     },
     {
       "id": 11,
@@ -298,7 +298,7 @@
         "Проверить фильтры, пустую выдачу, ошибочные параметры и соответствие данным каталога."
       ],
       "evidence": "Есть /api/options, /api/build и чтение выгрузки каталога в api/main.py.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/11"
     },
     {
       "id": 12,
@@ -327,7 +327,7 @@
         "Проверить каталог, карточки, фильтры и состояния загрузки/ошибки по согласованному MVP."
       ],
       "evidence": "Есть интерфейс сборки и фильтры компонентов; полный набор страниц карточек компьютеров из ЛР4 не подтверждён.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/12"
     },
     {
       "id": 13,
@@ -355,7 +355,7 @@
         "Не распространять результат одной игры Deadlock на весь набор игр; заполнить дополнительные строки проверки."
       ],
       "evidence": "collector/perf.py и advisor.py реализуют FPS; docs/FPS_VALIDATION.md содержит замер Deadlock, остальные строки замеров не заполнены. 22 теста подборщика/FPS прошли.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/13"
     },
     {
       "id": 14,
@@ -384,7 +384,7 @@
         "Проверить подбор по бюджету/задаче, совместимость, отсутствие решения и переходы сценария."
       ],
       "evidence": "collector/advisor.py и /api/advise подбирают сборки; завершённый пошаговый сценарий из ЛР4 не подтверждён.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/14"
     },
     {
       "id": 15,
@@ -413,7 +413,7 @@
         "Проверить все шаги, возврат, сохранение введённых параметров и отображение результата."
       ],
       "evidence": "Есть UI подбора в web; приёмка именно пошагового мастера не найдена.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/15"
     },
     {
       "id": 16,
@@ -446,7 +446,7 @@
         "Выполнить функциональные сценарии, зарегистрировать дефекты и повторную проверку."
       ],
       "evidence": "22 теста подборщика/FPS прошли; отдельного UI-протокола каталога/мастера не найдено.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/16"
     },
     {
       "id": 17,
@@ -471,7 +471,7 @@
         "Проверить добавление/удаление, итоговую цену и валидацию формы заявки."
       ],
       "evidence": "Корзина и форма заявки не найдены в просмотренных web/index.html и web/app/app.js.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/17"
     },
     {
       "id": 18,
@@ -500,7 +500,7 @@
         "Проверить обработку валидного заказа и отказ для некорректных данных."
       ],
       "evidence": "Обработчик заказа не найден в api/main.py; это не доказывает отсутствие во внешних ветках.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/18"
     },
     {
       "id": 19,
@@ -525,7 +525,7 @@
         "Проверить доставку уведомления и обработку ошибок Telegram без раскрытия токена."
       ],
       "evidence": "Интеграция Telegram для заказов не найдена в доступном дереве.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/19"
     },
     {
       "id": 20,
@@ -558,7 +558,7 @@
         "Приложить обезличенный протокол реального OpenAI-запроса; наличие кода и FakeModel не является такой проверкой."
       ],
       "evidence": "api/ai/llm.py поддерживает OpenAI и Ollama; router.py и agent.py реализуют чат и инструменты. Тесты используют FakeModel; реальный вызов OpenAI в ЛР6 не выполнялся.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/20"
     },
     {
       "id": 21,
@@ -583,7 +583,7 @@
         "Проверить отправку/получение реплик, ожидание ответа, ошибки и сохранение session_id."
       ],
       "evidence": "Маршрут /api/ai/chat существует; интерфейс чата не найден в просмотренных web/index.html и web/app/app.js.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/21"
     },
     {
       "id": 22,
@@ -620,7 +620,7 @@
         "Выполнить сквозной сценарий всех подсистем на тестовом окружении и приложить протокол."
       ],
       "evidence": "Есть AI API-тесты, но их импорт остановлен отсутствующим httpx; сквозной заказ → Telegram → чат не подтверждён.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/22"
     },
     {
       "id": 23,
@@ -645,7 +645,7 @@
         "Проверить production-развёртывание, HTTPS, перезапуск и восстановление; зафиксировать адаптацию Nginx → Caddy."
       ],
       "evidence": "Есть deploy/docker-compose.yml, api/Dockerfile, scripts/deploy.sh и Caddyfile. В ЛР4 указан Nginx; доступность VPS не проверялась.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/23"
     },
     {
       "id": 24,
@@ -670,7 +670,7 @@
         "Закрыть подтверждённые критичные дефекты и приложить результаты регрессии."
       ],
       "evidence": "Реестр дефектов и протокол финальной стабилизации не найдены.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/24"
     },
     {
       "id": 25,
@@ -703,7 +703,7 @@
         "Зафиксировать итог приёмки и нерешённые ограничения; статус Done допустим только после завершения протокола."
       ],
       "evidence": "Есть каталог, 22 успешных теста и частичная FPS-валидация; финального протокола данных и реальных LLM-ответов нет.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/25"
     },
     {
       "id": 26,
@@ -736,7 +736,7 @@
         "Провести приёмку по критериям MVP, подготовить документацию и демонстрационный сценарий."
       ],
       "evidence": "README и инструкция запуска существуют; полного протокола итоговой приёмки и демонстрации нет.",
-      "issue_url": null
+      "issue_url": "https://github.com/07HaNNibal07/pc-builder-main/issues/26"
     }
   ]
 }
